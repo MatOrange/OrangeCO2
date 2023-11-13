@@ -70,44 +70,47 @@
         #btn-connexion:hover {
             color: #f58220;
         }
-
-        /* Style pour la section avec les images et texte centré */
-        .images-centrees {
-            display: flex;
-            justify-content: center; /* Centre les éléments horizontalement */
-            align-items: center; /* Centre les éléments verticalement */
-            height: 65vh; /* Hauteur de la section, ajustez selon vos besoins */
-            margin-bottom: -130px;
-        }
-
-        /* Styles pour les images carrées avec texte au centre */
-        .image-avec-texte {
-            position: relative; /* Position relative pour le positionnement du texte */
-            margin: 7px;
-            transition: transform 0.3s ease;
-        }
-
         .image-avec-texte:hover {
             transform: scale(1.1);
             cursor: pointer;
         }
 
-        /* Style pour les images carrées */
-        .image-carree {
-            width: 200px;
-            height: 200px;
-        }
+        /* Styles pour la section avec les images et texte centré */
+.images-centrees {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    min-height: calc(70vh - 20px); /* Ajuste la hauteur minimale de la section (100vh est la hauteur de la fenêtre) */
+    padding: 20px;
+}
 
-        /* Style pour le texte au centre de l'image avec une police plus grande */
-        .texte-image {
-            position: absolute;
-            top: 50%; /* Centre le texte verticalement */
-            left: 50%; /* Centre le texte horizontalement */
-            transform: translate(-50%, -50%); /* Centre le texte précisément au milieu */
-            font-weight: bold;
-            font-size: 20px; /* Augmentation de la taille de la police */
-            color: #fff; /* Couleur du texte en blanc */
-        }
+/* Styles pour les images carrées avec texte au centre */
+.image-avec-texte {
+    position: relative;
+    margin: 7px;
+    transition: transform 0.3s ease;
+    flex: 1 0 200px;
+    max-width: 300px; /* Ajout d'une largeur maximale pour éviter que les images ne deviennent trop grandes */
+}
+
+/* Style pour les images carrées */
+.image-carree {
+    width: 100%;
+    height: auto;
+}
+
+/* Style pour le texte au centre de l'image avec une police plus grande */
+.texte-image {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-weight: bold;
+    font-size: 14px;
+    color: #fff;
+}
+
 
 /* Style pour la section avec les taux de CO2 */
 .section-taux-co2 {
@@ -279,7 +282,7 @@
   </div>
 </div>
 
-      <button id="toggleInfoButton">Afficher vos informations</button>   
+      <button id="toggleInfoButton">Afficher vos informationsA</button>   
     
     <!-- Section pour les informations personnelles -->
     <div class="informations-personnelles" id="informations-personnelles">
