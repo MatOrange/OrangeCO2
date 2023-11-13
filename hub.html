@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mes services</title>
+    <style>
+        /* Styles pour le corps de la page */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #fff;
+            margin: 0;
+            padding: 0;
+            text-align: center; /* Centre le contenu horizontalement */
+        }
+
+        /* Style pour le header */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background-color: #000000;
+            color: #fff;
+            padding: -10px;
+            display: flex;
+            align-items: center;
+            z-index: 100;
+        }
+
+        #logo {
+            width: 160px;
+            height: auto;
+            margin-right: 0px;
+            vertical-align: middle;
+            cursor: pointer; /* Ajout d'un curseur de main au logo pour indiquer qu'il est cliquable */
+        }
+
+        /* Style pour le texte du header */
+        #wholesale-france {
+            color: #fff;
+            font-size: 35px;
+            transition: color 0.3s ease;
+            vertical-align: bottom;
+        }
+
+        #wholesale-france:hover {
+            color: #f58220;
+        }
+
+        #btn-connexion {
+            background-color: transparent;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            font-size: 25px;
+            transition: color 0.3s ease;
+            margin-left: auto;
+            text-decoration: none;
+        }
+        #entreprise {
+            font-size: 35px;
+            
+            
+        }
+
+        #btn-connexion:hover {
+            color: #f58220;
+        }
+
+        /* Style pour la section avec les images et texte centré */
+        .images-centrees {
+            display: flex;
+            justify-content: center; /* Centre les éléments horizontalement */
+            align-items: center; /* Centre les éléments verticalement */
+            height: 65vh; /* Hauteur de la section, ajustez selon vos besoins */
+            margin-bottom: -130px;
+        }
+
+        /* Styles pour les images carrées avec texte au centre */
+        .image-avec-texte {
+            position: relative; /* Position relative pour le positionnement du texte */
+            margin: 7px;
+            transition: transform 0.3s ease;
+        }
+
+        .image-avec-texte:hover {
+            transform: scale(1.1);
+            cursor: pointer;
+        }
+
+        /* Style pour les images carrées */
+        .image-carree {
+            width: 200px;
+            height: 200px;
+        }
+
+        /* Style pour le texte au centre de l'image avec une police plus grande */
+        .texte-image {
+            position: absolute;
+            top: 50%; /* Centre le texte verticalement */
+            left: 50%; /* Centre le texte horizontalement */
+            transform: translate(-50%, -50%); /* Centre le texte précisément au milieu */
+            font-weight: bold;
+            font-size: 20px; /* Augmentation de la taille de la police */
+            color: #fff; /* Couleur du texte en blanc */
+        }
+
+/* Style pour la section avec les taux de CO2 */
+.section-taux-co2 {
+    display: flex;
+    flex-direction: column; /* Affiche les rangées en colonnes */
+    align-items: center; /* Centre les éléments horizontalement */
+}
+
+/* Style pour chaque rangée */
+.row {
+    display: flex;
+    justify-content: space-between; /* Répartit l'espace entre le texte et le taux de CO2 */
+    align-items: center; /* Centre les éléments verticalement */
+    width: 500px; /* Largeur de chaque rangée, ajustez selon vos besoins */
+    margin: 20px 0; /* Espacement vertical entre les rangées */
+}
+
+/* Style pour le texte à gauche */
+.texte-co2 {
+    font-size: 18px; /* Taille de la police */
+    font-weight: bold;
+}
+
+/* Style pour le taux de CO2 à droite */
+.taux-co2 {
+    font-size: 18px; /* Taille de la police */
+    font-weight: bold;
+    color: #f58220; /* Couleur orange */
+}
+
+/* Style pour la classe interface */
+.interface {
+    font-size: 18px; /* Taille de la police */
+    
+}
+
+        /* Style pour la section des informations personnelles */
+        .informations-personnelles {
+            display: none; /* Masquer la section par défaut */
+            padding: 20px;
+            background-color: #f2f2f2;
+        }
+
+        /* Style pour les étiquettes d'informations personnelles */
+        .info-label {
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        /* Style pour le bouton de basculement */
+        #toggleInfoButton {
+            display: block;
+            margin: 20px auto; /* Centre le bouton horizontalement avec un espacement de 20px en haut et en bas */
+            padding: 10px 20px;
+            background-color: #f58220;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        #toggleInfoButton:hover {
+            background-color: #ff884d;
+        }
+        /* Style pour la section explicative du calcul des taux de CO2 */
+.section-explicative {
+    background-color: #f2f2f2;
+    padding: 20px;
+    margin: 20px;
+    border-radius: 5px;
+}
+
+/* Style pour le titre de la section */
+.section-explicative h2 {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+/* Style pour les paragraphes de texte explicatif */
+.texte-explicatif p {
+    text-align: left; /* Centrer le texte à gauche */
+    font-size: 18px;
+    line-height: 1.5;
+    margin-bottom: 10px;
+}
+
+/* Style pour les éléments de liste (puces) */
+.texte-explicatif ol {
+    text-align: left; /* Centrer le texte à gauche */
+    font-size: 18px;
+    line-height: 1.5;
+    margin-bottom: 10px;
+}
+
+/* Style pour les éléments de liste à puce */
+.texte-explicatif li {
+    margin-left: 20px; /* Décaler légèrement les puces à droite pour l'indentation */
+}
+
+    </style>
+</head>
+<body>
+    <header>
+        <!-- Ajout d'un lien autour de l'image du logo -->
+        <a href="http://127.0.0.1:3000/hub.html">
+            <img id="logo" src="image/orange_logo.png" alt="Logo Orange">
+        </a>
+        <span id="wholesale-france">Wholesale</span>
+        <span id="btn-connexion" style="margin-right: 10px;"></span>
+        
+    </header>
+
+
+
+    <!-- Section avec trois images et texte centré -->
+    <div class="images-centrees">
+        <div class="image-avec-texte">
+            <a href="http://127.0.0.1:3000/eco.html">
+                <img class="image-carree" src="image/nature5.jpg" alt="Image 1">
+                <div class="texte-image">J'écocompense</div>
+            </a>
+        </div>
+        <div class="image-avec-texte">
+            <a href="http://127.0.0.1:3000/action.html">
+                <img class="image-carree" src="image/nature6.jpg" alt="Image 2">
+                <div class="texte-image">Suivi des actions</div>
+            </a>
+        </div>
+        <div class="image-avec-texte">
+            <a href="http://127.0.0.1:3000/contract.html">
+                <img class="image-carree" src="image/contrat1.jpg" alt="Image 3">
+                <div class="texte-image">Consulter mes actions terminées & certificats</div>
+            </a>
+        </div>
+    </div>
+
+    <div class ="entreprise">
+      <span id ="entreprise"></span>
+    </div>
+
+<div class="section-taux-co2">
+  <div class="row">
+      <div class="texte-co2">Vos POP</div>
+      <div>Vos interfaces</div>
+      <div class="taux-co2">Consommation sur 1 an (tCO2)</div>
+  </div>
+  <div class="row">
+      <div class="texte-co2">POP Paris</div>
+      <div class="interface" id="interfaceParis">1 x 10 Gbps</div>
+      <div class="taux-co2" id="tauxParis">?</div>
+  </div>
+  <div class="row">
+      <div class="texte-co2">POP New York</div>
+      <div class="interface" id="interfaceNewYork">2 x 100 Gbps</div>
+      <div class="taux-co2" id="tauxNewYork">?</div>
+  </div>
+  <div class="row">
+      <div class="texte-co2">POP Rome</div>
+      <div class="interface" id="interfaceRome">10 x 10 Gbps</div>
+      <div class="taux-co2" id="tauxRome">?</div>
+  </div>
+  <!-- Ajout de la section "POP Barcelone" -->
+  <div class="row">
+      <div class="texte-co2">POP Barcelone</div>
+      <div class="interface" id="interfaceBarcelone">5 x 10 Gbps</div>
+      <div class="taux-co2" id="tauxBarcelone">?</div>
+  </div>
+</div>
+
+      <button id="toggleInfoButton">Afficher vos informations</button>   
+    
+    <!-- Section pour les informations personnelles -->
+    <div class="informations-personnelles" id="informations-personnelles">
+        <h2>Vos informations récupérées de votre wallet Digital identity</h2>
+        <p><span class="info-label">Commercial Contact:</span> <span id="commercialContact"></span></p>
+        <p><span class="info-label">Company Name:</span> <span id="companyName"></span></p>
+        <p><span class="info-label">Country Address:</span> <span id="countryAddress"></span></p>
+        <p><span class="info-label">Billing Contact:</span> <span id="billingName"></span></p>
+        <p><span class="info-label">IBAN:</span> <span id="iban"></span></p>
+        <p><span class="info-label">Swiftcode:</span> <span id="swiftcode"></span></p>
+    </div>
+
+    <!-- ... (votre code HTML existant) ... -->
+
+<!-- Section explicative du calcul des taux de CO2 -->
+<div class="section-explicative">
+  <h2>Comment calculons-nous les taux de CO2 ?</h2>
+  <div class="texte-explicatif">
+      <p>Le calcul des taux de CO2 est basé sur les informations suivantes :</p>
+      <ol>
+          <li>Multiplication du nombre d'interfaces par leur capacité en Gbps.</li>
+          <li>Hypothèse d'une utilisation de 30% de la bande passante disponible sur une interface réservée.</li>
+          <li>Multiplication par le nombre de secondes par an (31 536 000) pour passer de Gbit/s à Gbit.</li>
+          <li>D'apèrs l'étude réalisé par Schien & al de 2014, la consommation d'énergie des câbles et des bandes passantes IP est d'environ 0,05 kWheure/GB et elle est divisée par 2 tous les 2 ans. En 2024, elle est donc de 0,01 kW/Gbit/heure. Nous multiplions ainsi notre résultat précédent par 0,01 puis nous divisons par 8 pour passer en giga octet (GB). Pour en déterminer l'impact énergétique en kWatt x heure.</li>
+          <li>En France, 1 kWatt/heure équivaut à 55 grammes de CO2. Nous multiplions donc notre résultat par 55 pour obtenir la consommation en grammes de CO2 par an, puis nous la convertissons en tonnes.</li>
+      </ol>
+  </div>
+  <div class="texte-explicatif">
+      <p>N'hésitez pas à explorer les taux de CO2 de vos POP pour une meilleure compréhension de votre impact environnemental.</p>
+  </div>
+
+
+<!-- ... (votre code HTML existant) ... -->
+
+
+    <!-- Votre code JavaScript pour l'interaction avec MetaMask et le bouton de basculement -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.6.0/web3.min.js"></script>
+    <script>
+
+
+          // Fonction pour extraire les valeurs numériques et calculer le taux de CO2
+          function calculerTauxCO2(interfaceId, tauxId) {
+    const interfaceElement = document.getElementById(interfaceId);
+    const tauxElement = document.getElementById(tauxId);
+
+    // Récupérer le texte de l'interface (par exemple, "1 x 10 Gbps")
+    const interfaceText = interfaceElement.textContent;
+
+    // Utiliser une expression régulière pour extraire les valeurs numériques
+    const matches = interfaceText.match(/(\d+)\s*x\s*(\d+)\s*Gbps/);
+
+    if (matches && matches.length === 3) {
+        const valeur1 = parseInt(matches[1]);
+        const valeur2 = parseInt(matches[2]);
+
+        // Effectuer le calcul avec les valeurs extraites
+        const tauxCO2 = (valeur1 * valeur2 * 0.33 * 31536000 * 0.01 * 55) / 8000000;
+
+        // Mettre à jour la balise "taux-co2" avec le résultat
+        tauxElement.textContent = tauxCO2.toFixed(2); // Afficher le résultat avec 2 décimales
+
+        // Retourner la valeur calculée du taux de CO2
+        return tauxCO2;
+    }
+
+    // Si aucune correspondance n'est trouvée, retourner NaN (ou une autre valeur appropriée)
+    return NaN;
+}
+
+
+    // Appeler la fonction pour chaque interface
+    const tauxParis = calculerTauxCO2("interfaceParis", "tauxParis");
+    const tauxNewYork = calculerTauxCO2("interfaceNewYork", "tauxNewYork");
+    const tauxRome = calculerTauxCO2("interfaceRome", "tauxRome");
+    const tauxBarcelone = calculerTauxCO2("interfaceBarcelone", "tauxBarcelone");
+
+    const sommeCO2 = tauxParis + tauxNewYork + tauxRome + tauxBarcelone;
+    localStorage.setItem("sommeCO2", sommeCO2);
+
+
+
+  
+        window.addEventListener('load', async () => {
+            if (window.ethereum) {
+                // Initialisation de Web3
+                window.web3 = new Web3(window.ethereum);
+
+                // Demande d'autorisation à MetaMask
+                try {
+                    await window.ethereum.enable();
+                } catch (error) {
+                    console.error("Autorisation refusée par l'utilisateur");
+                }
+
+                // Contrat intelligent et compte connecté
+                const contractAddress = '0xa5477348Deaf8183D3292403E408bB67969AF3A4'; // Remplacez par l'adresse de votre contrat
+                const contractAbi = [
+    {
+      "inputs": [],
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "sender",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "string",
+          "name": "orderId",
+          "type": "string"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "tCO2",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "euros",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "timestamp",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "string",
+          "name": "status",
+          "type": "string"
+        },
+        {
+          "indexed": false,
+          "internalType": "string",
+          "name": "Action",
+          "type": "string"
+        }
+      ],
+      "name": "Compensated",
+      "type": "event"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "name": "companyInfos",
+      "outputs": [
+        {
+          "internalType": "string",
+          "name": "commercialContact",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "companyName",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "countryAddress",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "commercialContactOwner",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "ownerCountry",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "billingName",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "iban",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "swiftcode",
+          "type": "string"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function",
+      "constant": true
+    },
+    {
+      "inputs": [],
+      "name": "owner",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function",
+      "constant": true
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "string",
+          "name": "",
+          "type": "string"
+        }
+      ],
+      "name": "tCO2compenseByOrderId",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function",
+      "constant": true
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "name": "transactions",
+      "outputs": [
+        {
+          "internalType": "string",
+          "name": "orderId",
+          "type": "string"
+        },
+        {
+          "internalType": "uint256",
+          "name": "tCO2",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "euros",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "timestamp",
+          "type": "uint256"
+        },
+        {
+          "internalType": "address",
+          "name": "sender",
+          "type": "address"
+        },
+        {
+          "internalType": "string",
+          "name": "status",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "Action",
+          "type": "string"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function",
+      "constant": true
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_tCO2",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_euros",
+          "type": "uint256"
+        }
+      ],
+      "name": "compensate",
+      "outputs": [],
+      "stateMutability": "payable",
+      "type": "function",
+      "payable": true
+    },
+    {
+      "inputs": [],
+      "name": "getTransactionsCount",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function",
+      "constant": true
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "index",
+          "type": "uint256"
+        }
+      ],
+      "name": "getTransaction",
+      "outputs": [
+        {
+          "internalType": "string",
+          "name": "orderId",
+          "type": "string"
+        },
+        {
+          "internalType": "uint256",
+          "name": "tCO2",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "euros",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "timestamp",
+          "type": "uint256"
+        },
+        {
+          "internalType": "address",
+          "name": "sender",
+          "type": "address"
+        },
+        {
+          "internalType": "string",
+          "name": "status",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "Action",
+          "type": "string"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function",
+      "constant": true
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_companyAddress",
+          "type": "address"
+        }
+      ],
+      "name": "getCompanyInformation",
+      "outputs": [
+        {
+          "internalType": "string",
+          "name": "",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "",
+          "type": "string"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function",
+      "constant": true
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "string",
+          "name": "_orderId",
+          "type": "string"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_additionalTco2",
+          "type": "uint256"
+        },
+        {
+          "internalType": "string",
+          "name": "_newAction",
+          "type": "string"
+        }
+      ],
+      "name": "addToTco2",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "string",
+          "name": "_orderId",
+          "type": "string"
+        }
+      ],
+      "name": "getTco2CompenseByOrderId",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function",
+      "constant": true
+    },
+    {
+      "inputs": [],
+      "name": "getSenderAddress",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function",
+      "constant": true
+    },
+    {
+      "inputs": [],
+      "name": "getRegisteredAddresses",
+      "outputs": [
+        {
+          "internalType": "address[]",
+          "name": "",
+          "type": "address[]"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function",
+      "constant": true
+    }
+  ]; // Remplacez par l'ABI de votre contrat
+                const contract = new web3.eth.Contract(contractAbi, contractAddress);
+                const accounts = await web3.eth.getAccounts();
+                const connectedAccount = accounts[0];
+
+                // Récupérer les informations de l'entreprise depuis le contrat intelligent
+                const companyInfo = await contract.methods.getCompanyInformation(connectedAccount).call();
+
+                // Remplir les informations personnelles
+                document.getElementById('commercialContact').textContent = companyInfo[0];
+                document.getElementById('companyName').textContent = companyInfo[1];
+                document.getElementById('countryAddress').textContent = companyInfo[2];                
+                document.getElementById('billingName').textContent = companyInfo[5];
+                document.getElementById('iban').textContent = companyInfo[6];
+                document.getElementById('swiftcode').textContent = companyInfo[7];
+
+                
+
+                // Afficher le nom de l'entreprise dans le header
+                document.getElementById('btn-connexion').textContent = `Bonjour ${companyInfo[0]}`;
+                document.getElementById('entreprise').textContent = `Voici les services détenues par votre entreprise ${companyInfo[1]}`;
+
+
+                // Récupérer le bouton de basculement et la section des informations personnelles
+                const toggleInfoButton = document.getElementById('toggleInfoButton');
+                const informationsPersonnelles = document.getElementById('informations-personnelles');
+
+                // Fonction pour basculer l'affichage des informations personnelles
+                toggleInfoButton.addEventListener('click', () => {
+                    if (informationsPersonnelles.style.display === 'none' || informationsPersonnelles.style.display === '') {
+                        informationsPersonnelles.style.display = 'block';
+                        toggleInfoButton.textContent = 'Masquer vos informations';
+                    } else {
+                        informationsPersonnelles.style.display = 'none';
+                        toggleInfoButton.textContent = 'Afficher vos informations';
+                    }
+                });
+            } else {
+                console.error("MetaMask n'est pas installé.");
+            }
+        });
+    </script>
+</body>
+</html>

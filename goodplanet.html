@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interface GoodPlanet</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background-color: #0056b3;
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .table th, .table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        .table th {
+            background-color: #f2f2f2;
+        }
+    </style>
+    <!-- Incluez la bibliothèque Web3.js -->
+    <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js/dist/web3.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Interface GoodPlanet</h1>
+
+        <!-- Sélectionnez une transaction par son ID -->
+        <div class="form-group">
+            <label for="transactionSelect">Sélectionnez une commande :</label>
+            <select id="transactionSelect" class="form-control">
+                <!-- Les options seront générées dynamiquement avec JavaScript -->
+            </select>
+        </div>
+
+        <!-- Sélectionnez une action -->
+        <div class="form-group">
+            <label for="actionSelect">Sélectionnez un projet :</label>
+            <select id="actionSelect" class="form-control">
+                <!-- Options d'actions prédéfinies -->
+                <option value="Action1">ACCÈS À L'EAU POTABLE PAR L'ÉNERGIE SOLAIRE AU MALAWI</option>
+                <option value="Action2">RÉSERVOIRS À BIOGAZ DANS L'ÉTAT DU MADHYA PRADESH EN INDE</option>
+                <option value="Action3">RÉSERVOIRS À BIOGAZ DANS L'ÉTAT DU TÉLANGANA ET LE NORD DE L’ÉTAT DU KARNATAKA EN INDE</option>
+                <!-- Ajoutez autant d'options d'actions que nécessaire -->
+            </select>
+        </div>
+
+        <!-- Saisissez le montant de tCO2compense -->
+        <div class="form-group">
+            <label for="tCO2compense">Saisissez le montant de tCO2 à écocompenser :</label>
+            <input type="number" id="tCO2compense" class="form-control" placeholder="Saisissez le montant" required>
+        </div>
+
+        <!-- Bouton pour soumettre la mise à jour -->
+        <button id="submitUpdate" class="btn btn-primary">Ecocompenser</button>
+
+        <!-- Tableau pour afficher les détails de la transaction -->
+        <h2>Liste des commandes</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ID Commande</th>
+                    <th>Date</th>
+                    <th>Taux CO2 commandé</th>
+                    <th>Taux CO2 compensé</th>
+                    <th>État de la commande</th>
+                </tr>
+            </thead>
+            <tbody id="transactionTable">
+                <!-- Les détails de la transaction seront générés dynamiquement avec JavaScript -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        // Vérifiez si Metamask est installé
+        if (window.ethereum) {
+            // Demandez à l'utilisateur de se connecter
+            window.ethereum.enable().then(async function () {
+                // Initialisez Web3.js
+                const web3 = new Web3(window.ethereum);
+
+                // Remplacez ceci par l'adresse de votre contrat intelligent
+                const contractAddress = '0xa5477348Deaf8183D3292403E408bB67969AF3A4';
+
+                // Initialisez l'ABI (Remplacez ceci par l'ABI réelle de votre contrat)
+                const ABI_DU_CONTRAT = [
+    {
+      "inputs": [],
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "sender",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "string",
+          "name": "orderId",
+          "type": "string"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "tCO2",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "euros",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "timestamp",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "string",
+          "name": "status",
+          "type": "string"
+        },
+        {
+          "indexed": false,
+          "internalType": "string",
+          "name": "Action",
+          "type": "string"
+        }
+      ],
+      "name": "Compensated",
+      "type": "event"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "name": "companyInfos",
+      "outputs": [
+        {
+          "internalType": "string",
+          "name": "commercialContact",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "companyName",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "countryAddress",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "commercialContactOwner",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "ownerCountry",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "billingName",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "iban",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "swiftcode",
+          "type": "string"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function",
+      "constant": true
+    },
+    {
+      "inputs": [],
+      "name": "owner",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function",
+      "constant": true
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "string",
+          "name": "",
+          "type": "string"
+        }
+      ],
+      "name": "tCO2compenseByOrderId",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function",
+      "constant": true
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "name": "transactions",
+      "outputs": [
+        {
+          "internalType": "string",
+          "name": "orderId",
+          "type": "string"
+        },
+        {
+          "internalType": "uint256",
+          "name": "tCO2",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "euros",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "timestamp",
+          "type": "uint256"
+        },
+        {
+          "internalType": "address",
+          "name": "sender",
+          "type": "address"
+        },
+        {
+          "internalType": "string",
+          "name": "status",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "Action",
+          "type": "string"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function",
+      "constant": true
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_tCO2",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_euros",
+          "type": "uint256"
+        }
+      ],
+      "name": "compensate",
+      "outputs": [],
+      "stateMutability": "payable",
+      "type": "function",
+      "payable": true
+    },
+    {
+      "inputs": [],
+      "name": "getTransactionsCount",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function",
+      "constant": true
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "index",
+          "type": "uint256"
+        }
+      ],
+      "name": "getTransaction",
+      "outputs": [
+        {
+          "internalType": "string",
+          "name": "orderId",
+          "type": "string"
+        },
+        {
+          "internalType": "uint256",
+          "name": "tCO2",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "euros",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "timestamp",
+          "type": "uint256"
+        },
+        {
+          "internalType": "address",
+          "name": "sender",
+          "type": "address"
+        },
+        {
+          "internalType": "string",
+          "name": "status",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "Action",
+          "type": "string"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function",
+      "constant": true
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_companyAddress",
+          "type": "address"
+        }
+      ],
+      "name": "getCompanyInformation",
+      "outputs": [
+        {
+          "internalType": "string",
+          "name": "",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "",
+          "type": "string"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function",
+      "constant": true
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "string",
+          "name": "_orderId",
+          "type": "string"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_additionalTco2",
+          "type": "uint256"
+        },
+        {
+          "internalType": "string",
+          "name": "_newAction",
+          "type": "string"
+        }
+      ],
+      "name": "addToTco2",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "string",
+          "name": "_orderId",
+          "type": "string"
+        }
+      ],
+      "name": "getTco2CompenseByOrderId",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function",
+      "constant": true
+    },
+    {
+      "inputs": [],
+      "name": "getSenderAddress",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function",
+      "constant": true
+    },
+    {
+      "inputs": [],
+      "name": "getRegisteredAddresses",
+      "outputs": [
+        {
+          "internalType": "address[]",
+          "name": "",
+          "type": "address[]"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function",
+      "constant": true
+    }
+  ];
+
+                // Initialisez le contrat intelligent en utilisant l'ABI
+                const contract = new web3.eth.Contract(ABI_DU_CONTRAT, contractAddress);
+
+                // Fonction pour peupler la liste déroulante avec les ID de transaction
+                async function populateTransactionSelect() {
+                    const transactionsCount = await contract.methods.getTransactionsCount().call();
+                    const transactionSelect = document.getElementById('transactionSelect');
+
+                    for (let i = 0; i < transactionsCount; i++) {
+                        const transaction = await contract.methods.getTransaction(i).call();
+                        const option = document.createElement('option');
+                        option.value = transaction.orderId;
+                        option.textContent = `ID de transaction : ${transaction.orderId} - tCO2 : ${transaction.tCO2}`;
+                        transactionSelect.appendChild(option);
+                    }
+                }
+
+                // Écouteur d'événement pour soumettre la mise à jour
+                document.getElementById('submitUpdate').addEventListener('click', async () => {
+                    const selectedTransactionId = document.getElementById('transactionSelect').value;
+                    const tCO2compense = parseFloat(document.getElementById('tCO2compense').value);
+
+                    // Obtenir la valeur de l'action sélectionnée
+                    const selectedAction = document.getElementById('actionSelect').options[document.getElementById('actionSelect').selectedIndex].text;
+
+                    try {
+                        console.log("Selected Transaction ID:", selectedTransactionId);
+                        console.log("tCO2compense:", tCO2compense);
+                        console.log("Selected Action:", selectedAction);
+
+                        // Appelez la fonction addToTco2 avec l'orderId et l'action appropriés
+                        await contract.methods.addToTco2(selectedTransactionId, tCO2compense, selectedAction).send({ from: window.ethereum.selectedAddress });
+
+                        alert('Mise à jour réussie !');
+                    } catch (error) {
+                        console.error('Erreur lors de la mise à jour :', error);
+                    }
+                });
+
+
+                // Fonction pour afficher les transactions dans le tableau (triées de la plus récente à la plus ancienne)
+                async function displayTransactions() {
+                    const transactionsCount = await contract.methods.getTransactionsCount().call();
+                    const transactionTable = document.getElementById('transactionTable');
+
+                    // Effacez le contenu précédent du tableau
+                    transactionTable.innerHTML = '';
+
+                    for (let i = transactionsCount - 1; i >= 0; i--) {
+                        const transaction = await contract.methods.getTransaction(i).call();
+                        const row = document.createElement('tr');
+
+                        const orderIdCell = document.createElement('td');
+                        orderIdCell.textContent = transaction.orderId;
+                        row.appendChild(orderIdCell);
+
+                        // Ajoutez la cellule pour la date (timestamp)
+                        const dateCell = document.createElement('td');
+                        const date = new Date(transaction.timestamp * 1000);
+                        dateCell.textContent = date.toLocaleDateString();
+                        row.appendChild(dateCell);
+
+                        const tCO2Cell = document.createElement('td');
+                        tCO2Cell.textContent = transaction.tCO2;
+                        row.appendChild(tCO2Cell);
+
+                        const tCO2compenseCell = document.createElement('td');
+                        const tCO2compense = await contract.methods.getTco2CompenseByOrderId(transaction.orderId).call();
+                        tCO2compenseCell.textContent = tCO2compense;
+                        row.appendChild(tCO2compenseCell);
+
+                        const statusCell = document.createElement('td');
+                        statusCell.textContent = transaction.status;
+                        row.appendChild(statusCell);
+
+                        // Vérifiez si tCO2 est égal à tCO2compense pour définir la couleur de la ligne
+                        if (transaction.tCO2 == tCO2compense) {
+                            row.style.backgroundColor = 'green';
+                        }
+
+                        transactionTable.appendChild(row);
+                    }
+                }
+
+                // Appelez la fonction pour peupler la liste déroulante lorsque la page est chargée
+                populateTransactionSelect();
+
+                // Appelez la fonction pour afficher les transactions dans le tableau
+                displayTransactions();
+
+            }).catch(function (error) {
+                console.error('Erreur lors de l\'autorisation Metamask :', error);
+            });
+        } else {
+            alert('Veuillez installer Metamask pour utiliser cette fonctionnalité.');
+        }
+    </script>
+</body>
+</html>

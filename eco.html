@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Écocompenser</title>
+    <style>
+        /* Style pour le conteneur de la page avec une image de fond */
+        .conteneur-barre {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh; /* Au moins 100% de la hauteur de la fenêtre d'affichage */
+            background-image: url('image/naturefond2.jpg'); /* Remplacez 'votre-image.jpg' par le chemin de votre image */
+            background-size: cover; /* Ajuster la taille de l'image pour couvrir tout le conteneur */
+            background-position: center; /* Centrer l'image horizontalement et verticalement */
+        }
+
+        /* Style pour le conteneur beige */
+        .conteneur-beige {
+            background-color: #000000; /* Couleur de l'arrière-plan beige */
+            padding: 20px; /* Espacement intérieur pour séparer les éléments */
+            border-radius: 10px; /* Coins arrondis */
+            text-align: center; /* Centrer le contenu horizontalement */
+        }
+
+        /* Style pour la barre coulissante */
+        .barre-coulissante {
+            width: 10%; /* Largeur de la barre coulissante */
+            position: relative; /* Position relative pour les éléments enfants */
+            margin-bottom: 10px; /* Marge inférieure pour espacement */
+        }
+
+        /* Style pour le texte et le bouton en blanc */
+        .texte-blanc {
+            color: white; /* Couleur du texte en blanc */
+            font-size: 24px; /* Taille de la police en pixels */
+        }
+
+        .bouton-blanc {
+            background-color: transparent; /* Fond du bouton transparent */
+            color: white; /* Couleur du texte du bouton en blanc */
+            border: none; /* Supprime la bordure du bouton */
+            cursor: pointer; /* Curseur de la souris en pointeur */
+            margin-top: 15px; /* Marge inférieure pour espacement */
+            text-decoration: none;
+            font-size: 24px; /* Taille de la police en pixels */
+            transition: color 0.3s ease;
+        }
+        .bouton-blanc:hover {
+            color: #f58220;
+        }
+    </style>
+</head>
+<body>
+    <!-- Conteneur pour centrer la barre coulissante et le texte -->
+    <div class="conteneur-barre">
+        <!-- Conteneur beige avec la barre, le texte sous la barre et le bouton -->
+        <div class="conteneur-beige">
+            <!-- Barre coulissante interactive pour sélectionner la somme des valeurs de CO2 -->
+            <div class="barre-coulissante">
+                <!-- Utilisez la valeur de la variable JavaScript "sommeCO2" comme "max" -->
+                <input type="range" min="0" value="0" id="barre-coulissante">
+            </div>
+
+            <!-- Texte pour afficher la somme sélectionnée en tonnes de CO2 -->
+            <div class="texte-somme texte-blanc">Quantité de CO2 à écocompenser ? : <span id="valeur-somme-tonnes">0 tCO2</span></div>
+
+            <!-- Texte pour afficher la somme sélectionnée en euros -->
+            <div class="texte-somme texte-blanc">Montant en euros : <span id="valeur-somme-euros">0 €</span></div>
+
+            <!-- Texte pour afficher "Écocompenser" (le bouton sans forme) -->
+            <button id="btn-ecocompenser" class="bouton-blanc" disabled>Écocompenser</button>
+        </div>
+    </div>
+
+    <script>
+        // Récupérez la valeur de sommeCO2 depuis le stockage local
+        // Récupérez la valeur de sommeCO2 depuis le stockage local
+        const sommeCO2 = parseFloat(localStorage.getItem("sommeCO2")) || 0;
+
+        // Référence à la balise input de type "range"
+        const barreCoulissante = document.getElementById('barre-coulissante');
+
+        // Référence au bouton "Écocompenser"
+        const btnEcocompenser = document.getElementById('btn-ecocompenser');
+
+        // Utilisez la valeur de sommeCO2 pour définir la valeur maximale de la barre coulissante
+        barreCoulissante.max = sommeCO2;
+
+        // Fonction pour mettre à jour la somme et le texte en fonction de la position de la barre coulissante
+        function mettreAJourSomme() {
+            const valeurSelectionnee = parseInt(barreCoulissante.value);
+            const valeurSommeEnTonnes = document.getElementById('valeur-somme-tonnes');
+            valeurSommeEnTonnes.textContent = valeurSelectionnee + ' tCO2';
+
+            // Mettre à jour la somme en euros en utilisant la conversion (1 tCO2 équivaut à 24 euros)
+            const montantEnEuros = valeurSelectionnee * 24;
+            const valeurSommeEnEuros = document.getElementById('valeur-somme-euros');
+            valeurSommeEnEuros.textContent = montantEnEuros + ' €';
+
+            // Activer ou désactiver le bouton en fonction de la somme sélectionnée
+            if (valeurSelectionnee === 0) {
+                btnEcocompenser.setAttribute('disabled', 'disabled');
+            } else {
+                btnEcocompenser.removeAttribute('disabled');
+            }
+        }
+
+        // Écoutez les événements de changement en temps réel de la barre coulissante
+        barreCoulissante.addEventListener('input', mettreAJourSomme);
+
+        // Appelez la fonction initiale pour afficher la valeur initiale
+        mettreAJourSomme();
+
+        // Ajoutez un gestionnaire d'événements au bouton "Écocompenser"
+        btnEcocompenser.addEventListener('click', () => {
+            // Récupérez les valeurs sélectionnées
+            const valeurSelectionnee = parseInt(barreCoulissante.value);
+            const montantEnEuros = valeurSelectionnee * 24;
+
+            // Redirigez l'utilisateur vers une autre page avec les valeurs affichées
+            window.location.href = `confirmation.html?tCO2=${valeurSelectionnee}&euros=${montantEnEuros}`;
+        });
+    </script>
+</body>
+</html>

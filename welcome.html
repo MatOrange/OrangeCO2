@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bienvenue</title>
+    <style>
+        /* Styles pour le corps de la page */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #fff1f1;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Style pour le header */
+        header {
+            position: fixed; /* Rend le header statique */
+            top: 0; /* Le header sera au sommet de la page */
+            left: 0; /* Le header sera aligné à gauche */
+            right: 0; /* Le header sera aligné à droite */
+            background-color: #000000; /* Noir */
+            color: #fff;
+            padding: -10px;
+            display: flex;
+            align-items: center; /* Centre verticalement les éléments dans le header */
+            z-index: 100; /* Pour s'assurer que le header est au-dessus du contenu de la page */
+        }
+
+        /* Style pour le logo */
+        #logo {
+            width: 160px; /* Ajustez la largeur selon vos besoins */
+            height: auto; /* Ajustez la hauteur pour maintenir les proportions */
+            margin-right: 0px; /* Marge à droite du logo pour l'espacement */
+            vertical-align: middle; /* Centre verticalement le logo et le texte */
+            cursor: pointer; /* Ajout d'un curseur de main au logo pour indiquer qu'il est cliquable */
+
+
+        }
+
+        /* Style pour le texte "Wholesale France" */
+        #wholesale-france {
+            color: #ffffff; /* Texte en blanc par défaut */
+            font-size: 35px; /* Taille de la police */
+            transition: color 0.3s ease; /* Transition de couleur du texte au survol */
+            vertical-align: bottom; /* Centre verticalement le texte */
+        }
+
+        /* Effet de changement de couleur du texte au survol */
+        #wholesale-france:hover {
+            color: #f58220; /* Texte en orange au survol */
+        }
+
+        /* Style pour le bouton de connexion */
+        #btn-connexion {
+            background-color: transparent; /* Fond transparent */
+            color: #fff; /* Texte en blanc */
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            font-size: 25px; /* Augmentez la taille de la police à 20 pixels */
+            transition: color 0.3s ease; /* Transition de couleur du texte au survol */
+            margin-left: auto; /* Pousse le bouton à l'extrême droite */
+            text-decoration: none; /* Supprime le soulignement du lien */
+        }
+
+        /* Effet de changement de couleur du texte du bouton au survol */
+        #btn-connexion:hover {
+            color: #f58220; /* Texte en orange au survol */
+        }
+
+
+        /* Style pour le footer */
+    
+
+        /* Style pour le contenu du footer */
+        .footer-content {
+            max-width: 800px; /* Largeur maximale du contenu du footer */
+            margin: auto; /* Centre le contenu horizontalement */
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f3f3f3;
+            text-align: center;
+            align-items: center; /* Centre le contenu verticalement */
+            
+        }
+
+        .confirmation {
+            transform: scale(1.1); /* Agrandit le corps de base de 20% */
+            background-color: #fff;
+            padding: 50px; 
+            margin-top: 100px
+        
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        p {
+            color: #666;
+        }
+
+    </style>
+</head>
+<body>
+    <header>
+        <a href="http://127.0.0.1:3000/Init.html">
+            <img id="logo" src="image/orange_logo.png" alt="Logo Orange">
+        </a>        <span id="wholesale-france">Wholesale</span>
+        <a id="btn-connexion" href="http://127.0.0.1:3000/hub.html">Mes services</a>
+    </header>
+
+    <!-- Contenu de votre corps -->
+    <div class="confirmation">
+        <h1>Connexion Réussie</h1>
+        <p>Votre adresse crypto Ethereum a été reconnue !</p>
+      
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <!-- Votre contenu de footer ici -->
+        </div>
+    </footer>
+</body>
+</html>

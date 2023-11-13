@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/web3@1.5.2/dist/web3.min.js"></script>
+    <title>Service Order</title>
+    <style>
+        /* Styles pour les cadres */
+        .cadre {
+            border: 1px solid black;
+            padding: 10px;
+            margin-bottom: 20px;
+        }
+
+        /* Styles pour les carrés */
+        .carre {
+            width: 20px;
+            height: 20px;
+            display: inline-block;
+            margin-right: 5px;
+        }
+
+        .carre-noir {
+            background-color: black;
+        }
+
+        .carre-gris {
+            background-color: gray;
+        }
+
+        /* Style pour centrer le bouton */
+        #confirmButton {
+            display: block;
+            margin: 0 auto;
+            text-align: center;
+            background-color: black;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Service Order</h1>
+
+    <!-- Section "Operator Information" -->
+    <div class="cadre">
+        <h2>Operator Information</h2>
+        <div class="align-gauche">
+            <p>Commercial Contact : <span id="commercialContact"></span></p>
+            <p>Company Name : <span id="companyName"></span></p>
+            <p>Address / Country : <span id="countryAddress"></span></p>
+            <p>Crypto address : <span id="cryptoAddress"></span></p>
+        </div>
+    </div>
+
+    <!-- Section "Orange Information" -->
+    <div class="cadre">
+        <h2>Orange Information</h2>
+        <div class="align-gauche">
+            <p>Commercial Contact : <span id="commercialContactOwner"></span></p>
+            <p>Address / Country : <span id="ownerCountry"></span></p>
+            <p>Crypto address : 0x03071b2a1024240d2aa78fE9684d3afC4c869F1e</span></p>
+        </div>
+    </div>
+
+    <!-- Section "Billing" -->
+    <div class="cadre">
+        <h2>Billing</h2>
+        <div class="align-gauche">
+            <p>Offer : Ecocompensation Basic</p>
+            <p>Service Duration : none</p>
+            <p>Billing Periodicity : none</p>
+            <p>Currency: EUR</p>
+            <p>Baseline price : 24 €/tCO2</p>
+            <!-- Ajoutez cet élément pour afficher la valeur euros -->
+            <p>Total Price : <span id="valeur-euros"></span></p>
+        </div>
+    </div>
+
+    <!-- Section "Billing Contact" -->
+    <div class="cadre">
+        <h2>Billing Contact</h2>
+        <div class="align-gauche">
+            <p>Operator Contact : <span id="billingName"></span></p>
+            <p>Company Name : <span id="billingCompanyName"></span></p>
+            <p>Address/Country : <span id="billingCountryAddress"></span></p>
+        </div>
+    </div>
+
+    <!-- Section "Payment" -->
+    <div class="cadre">
+        <h2>Payment</h2>
+        <div class="align-gauche">
+            <p>Currency : EUR</p>
+            <p>SWIFT CODE : <span id="swiftCode"></span></p>
+            <p>IBAN : <span id="iban"></span></p>
+            <p>Payment Term : 30 days</p>
+        </div>
+    </div>
+
+    <!-- Section "Guarantees" -->
+    <div class="cadre">
+        <h2>Guarantees</h2>
+        <div class="align-gauche">
+            <p>Currency : EUR</p>
+            <p><span class="carre carre-noir"></span>Current limit</p>
+            <p><span class="carre carre-gris"></span>Deposit</p>
+            <p><span class="carre carre-gris"></span>Bank Guarantee</p>
+            <p><span class="carre carre-gris"></span>Prepayment</p>
+        </div>
+    </div>
+
+    <!-- Bouton de confirmation -->
+    <a href="#" id="confirmButton">
+        <h2>Confirmer</h2>
+    </a>
+
+    <script>
+      
+        document.addEventListener('DOMContentLoaded', function() {
+
+        // Récupérez les valeurs de tCO2 et euros depuis les paramètres d'URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const euros = urlParams.get('euros');
+
+        console.log('euros:', euros);
+
+        // Affichez les valeurs dans le texte de confirmation
+        document.getElementById('valeur-euros').textContent = euros;
+
+        // Affichez l'adresse dans le texte HTML
+        const confirmButton = document.getElementById('confirmButton');
+        confirmButton.addEventListener('click', function () {
+            window.location.href = "hub.html"
+        });
+
+        async function getCompanyInformation() {
+            if (window.ethereum) {
+                try {
+                    const web3 = new Web3(window.ethereum);
+                    const accounts = await web3.eth.getAccounts();
+                    const companyAddress = accounts[0];
+                    document.getElementById('cryptoAddress').textContent = companyAddress;
+
+                    const contractAddress = '0x59c29C49b41E6880645A88a9Fcb6168D5cD512Cb';
+                    const ABI_DU_CONTRAT = [
+    {
+      "inputs": [],
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "sender",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "string",
+          "name": "orderId",
+          "type": "string"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "tCO2",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "euros",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "timestamp",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "string",
+          "name": "status",
+          "type": "string"
+        }
+      ],
+      "name": "Compensated",
+      "type": "event"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "name": "companyInfos",
+      "outputs": [
+        {
+          "internalType": "string",
+          "name": "commercialContact",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "companyName",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "countryAddress",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "commercialContactOwner",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "ownerCountry",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "billingName",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "iban",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "swiftcode",
+          "type": "string"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function",
+      "constant": true
+    },
+    {
+      "inputs": [],
+      "name": "owner",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function",
+      "constant": true
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "name": "tCO2compense",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function",
+      "constant": true
+    },
+    {
+      "inputs": [],
+      "name": "totalCompensatedCO2",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function",
+      "constant": true
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "name": "transactions",
+      "outputs": [
+        {
+          "internalType": "string",
+          "name": "orderId",
+          "type": "string"
+        },
+        {
+          "internalType": "uint256",
+          "name": "tCO2",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "euros",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "timestamp",
+          "type": "uint256"
+        },
+        {
+          "internalType": "address",
+          "name": "sender",
+          "type": "address"
+        },
+        {
+          "internalType": "string",
+          "name": "status",
+          "type": "string"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function",
+      "constant": true
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_tCO2",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_euros",
+          "type": "uint256"
+        }
+      ],
+      "name": "compensate",
+      "outputs": [],
+      "stateMutability": "payable",
+      "type": "function",
+      "payable": true
+    },
+    {
+      "inputs": [],
+      "name": "getTransactionsCount",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function",
+      "constant": true
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "index",
+          "type": "uint256"
+        }
+      ],
+      "name": "getTransaction",
+      "outputs": [
+        {
+          "internalType": "string",
+          "name": "orderId",
+          "type": "string"
+        },
+        {
+          "internalType": "uint256",
+          "name": "tCO2",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "euros",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "timestamp",
+          "type": "uint256"
+        },
+        {
+          "internalType": "address",
+          "name": "sender",
+          "type": "address"
+        },
+        {
+          "internalType": "string",
+          "name": "status",
+          "type": "string"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function",
+      "constant": true
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_companyAddress",
+          "type": "address"
+        }
+      ],
+      "name": "getCompanyInformation",
+      "outputs": [
+        {
+          "internalType": "string",
+          "name": "",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "",
+          "type": "string"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function",
+      "constant": true
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "string",
+          "name": "_orderId",
+          "type": "string"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_additionalTco2",
+          "type": "uint256"
+        }
+      ],
+      "name": "addToTco2",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_companyAddress",
+          "type": "address"
+        }
+      ],
+      "name": "getTco2Compense",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function",
+      "constant": true
+    },
+    {
+      "inputs": [],
+      "name": "getSenderAddress",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function",
+      "constant": true
+    },
+    {
+      "inputs": [],
+      "name": "getRegisteredAddresses",
+      "outputs": [
+        {
+          "internalType": "address[]",
+          "name": "",
+          "type": "address[]"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function",
+      "constant": true
+    }
+  ];
+
+                    const contract = new web3.eth.Contract(ABI_DU_CONTRAT, contractAddress);
+
+                    const companyInfo = await contract.methods.getCompanyInformation(companyAddress).call();
+
+                    // Mettez à jour les champs HTML avec les données renvoyées
+                    document.getElementById('commercialContact').textContent = companyInfo[0];
+                    document.getElementById('companyName').textContent = companyInfo[1];
+                    document.getElementById('countryAddress').textContent = companyInfo[2];
+                    document.getElementById('commercialContactOwner').textContent = companyInfo[3];
+                    document.getElementById('ownerCountry').textContent = companyInfo[4];
+                    document.getElementById('billingName').textContent = companyInfo[5];
+                    document.getElementById('iban').textContent = companyInfo[6];
+                    document.getElementById('swiftCode').textContent = companyInfo[7];
+                    document.getElementById('billingCompanyName').textContent = companyInfo[1];
+                    document.getElementById('billingCountryAddress').textContent = companyInfo[2];
+
+                    console.log(companyInfo);
+
+                } catch (error) {
+                    console.error("Erreur lors de la récupération des informations de l'entreprise :", error);
+                }
+            } else {
+                alert("Veuillez installer Metamask et vous connecter à un compte Ethereum.");
+            }
+        }
+
+        getCompanyInformation();
+      });
+    </script>
+</body>
+</html>
