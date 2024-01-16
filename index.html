@@ -5,148 +5,167 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Orange Wholesale</title>
     <style>
-        /* Styles pour le corps de la page */
         body {
             font-family: Arial, sans-serif;
             background-color: #fff;
             margin: 0;
             padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            justify-content: space-between;
+            align-items: center;
         }
 
-        /* Style pour le header */
         header {
-            position: fixed; /* Rend le header statique */
-            top: 0; /* Le header sera au sommet de la page */
-            left: 0; /* Le header sera aligné à gauche */
-            right: 0; /* Le header sera aligné à droite */
-            background-color: #000000; /* Noir */
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background-color: #000000;
             color: #fff;
             padding: -10px;
             display: flex;
-            align-items: center; /* Centre verticalement les éléments dans le header */
-            z-index: 100; /* Pour s'assurer que le header est au-dessus du contenu de la page */
+            align-items: center;
+            z-index: 100;
         }
 
-        /* Style pour le logo */
         #logo {
-            width: 160px; /* Ajustez la largeur selon vos besoins */
-            height: auto; /* Ajustez la hauteur pour maintenir les proportions */
-            margin-right: 0px; /* Marge à droite du logo pour l'espacement */
-            vertical-align: middle; /* Centre verticalement le logo et le texte */
-            cursor: pointer; /* Ajout d'un curseur de main au logo pour indiquer qu'il est cliquable */
-
-        }
-
-        /* Style pour le texte "Wholesale France" */
-        #wholesale-france {
-            color: #fff; /* Texte en blanc par défaut */
-            font-size: 35px; /* Taille de la police */
-            transition: color 0.3s ease; /* Transition de couleur du texte au survol */
-            vertical-align: bottom; /* Centre verticalement le texte */
-        }
-
-        /* Effet de changement de couleur du texte au survol */
-        #wholesale-france:hover {
-            color: #f58220; /* Texte en orange au survol */
-        }
-
-        /* Style pour le bouton de connexion */
-        #btn-connexion {
-            background-color: transparent; /* Fond transparent */
-            color: #fff; /* Texte en blanc */
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            font-size: 16px;
+            width: 160px;
+            height: auto;
+            margin-right: 0px;
+            vertical-align: middle;
             cursor: pointer;
-            font-size: 25px; /* Augmentez la taille de la police à 20 pixels */
-            transition: color 0.3s ease; /* Transition de couleur du texte au survol */
-            margin-left: auto; /* Pousse le bouton à l'extrême droite */
-            text-decoration: none; /* Supprime le soulignement du lien */
         }
 
-        /* Effet de changement de couleur du texte du bouton au survol */
-        #btn-connexion:hover {
-            color: #f58220; /* Texte en orange au survol */
+        #wholesale-france {
+            color: #fff;
+            font-size: 35px;
+            transition: color 0.3s ease;
+            vertical-align: bottom;
         }
 
-        /* Style pour la section de présentation */
+        #wholesale-france:hover {
+            color: #f58220;
+        }
+
         .presentation {
             text-align: center;
             padding: 20px;
-            margin-top: 110px; /* Ajustez la marge supérieure pour éviter que le contenu soit masqué sous le header fixe */
+            margin-top: 110px;
         }
 
-        /* Style pour le conteneur des images */
         .images-container {
             text-align: center;
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            grid-template-rows: repeat(2, auto); /* Deux rangées */
-            gap: 10px; /* Espacement entre les images */
-            justify-items: center;
-            margin: auto; /* Centre les images horizontalement */
-            max-width: 800px; /* Largeur maximale du conteneur */
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(2, 1fr);
+            gap: 10px;
+            max-width: 800px;
+            margin: auto;
         }
 
-        /* Style pour les images carrées */
         .image-carree {
-            width: 400px; /* Augmentez la taille des images carrées */
-            height: 250px; /* Assurez-vous que la hauteur est égale à la largeur pour maintenir la forme carrée */
-            margin: 7px; /* Ajoute une marge de 10 pixels autour de chaque image */
-            transition: transform 0.3s ease; /* Transition de la propriété "transform" */
+            width: 250px;
+            height: 150px;
+            margin: 7px;
+            position: relative;
+            overflow: hidden;
         }
 
-        .image-carree:hover {
-            transform: scale(1.1); /* Agrandit l'image de 10% au survol */
-            cursor: pointer; /* Change le curseur de la souris en pointeur au survol */
+        .image-carree img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
         }
-        /* Style pour le footer */
-        footer {
-            background-color: #000; /* Noir */
-            color: #fff; /* Texte en blanc */
-            padding: 20px 0; /* Espacement intérieur du footer */
+
+        .image-carree:hover img {
+            transform: scale(1.1);
+        }
+
+        .image-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #fff;
+            font-weight: bold;
+            font-size: 12px;
             text-align: center;
-}
-
-        /* Style pour le contenu du footer */
-        .footer-content {
-            max-width: 800px; /* Largeur maximale du contenu du footer */
-            margin: auto; /* Centre le contenu horizontalement */
+            width: 100%;
+            box-sizing: border-box;
         }
 
+        footer {
+            background-color: #000;
+            color: #fff;
+            padding: 20px 0;
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 800px;
+            margin: auto;
+        }
     </style>
 </head>
 <body>
     <header>
         <a href="index.html">
             <img id="logo" src="image/orange_logo.png" alt="Logo Orange">
-        </a>        <span id="wholesale-france">Wholesale</span>
-        <a id="btn-connexion" href="hub.html">Se connecter</a>
+        </a>
+        <span id="wholesale-france">Wholesale</span>
     </header>
 
     <div class="presentation">
-        <h1>Orange & GoodPlanet</h1>
+        <h1>Portail Orange Wholesale CO2</h1>
         <p>Avec ce nouvel outil, Orange s'engage à écocompenser l'emprunte carbone de vos services chez Orange Wholesale de manière certifiée et transparente.</p>
     </div>
 
-    <!-- Conteneur des images avec deux rangées -->
     <div class="images-container">
-        <img class="image-carree" src="image/nature1.jpg" alt="Image 1">
-        <img class="image-carree" src="image/nature2.jpg" alt="Image 2">
-        <img class="image-carree" src="image/nature3.jpg" alt="Image 3">
-        <img class="image-carree" src="image/nature4.jpg" alt="Image 4">
+        <div class="image-carree">
+            <a href="formulaire.html">
+                <img src="image/nature1.jpg" alt="Image 1">
+                <div class="image-text">Création Badge Digital Client</div>
+            </a>
+        </div>
+        <div class="image-carree">
+            <a href="formulaire_gp.html">
+                <img src="image/nature2.jpg" alt="Image 2">
+                <div class="image-text">Création Badge Digital Partenaire Ecocompensation</div>
+            </a>
+        </div>
+        <div class="image-carree">
+            <a href="formulaire_gp.html">
+                <img src="image/nature3.jpg" alt="Image 3">
+                <div class="image-text">Création Badge Digital Auditeur</div>
+            </a>
+        </div> 
+        <div class="image-carree">
+            <a href="hub.html">
+                <img src="image/nature5.jpg" alt="Image 4">
+                <div class="image-text">Espace Achat CO2</div>
+            </a>
+        </div>
+        <div class="image-carree">
+            <a href="orange_qr.html">
+                <img src="image/nature6.jpg" alt="Image 5">
+                <div class="image-text">Espace Action Ecocompensation</div>
+            </a>
+        </div>
+        <div class="image-carree">
+            <a href="orange_qr.html">
+                <img src="image/nature4.jpg" alt="Image 6">
+                <div class="image-text">Espace Certification</div>
+            </a>
+        </div>
     </div>
 
     <footer>
         <div class="footer-content">
-           
+            <!-- Ajoutez ici le contenu du footer -->
         </div>
     </footer>
-
-    
-
-    
-
 </body>
 </html>

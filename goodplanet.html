@@ -12,15 +12,42 @@
             background-color: #f4f4f4;
         }
 
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #fff;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background-color: #000000;
+            color: #fff;
+            padding: 10px; /* Ajustement de la marge intérieure */
+            display: flex;
+            align-items: center;
+            z-index: 100;
         }
+
+        #summary-logo {
+            width: 160px;
+            height: auto;
+            margin-right: 10px; /* Ajustement de la marge à zéro pour correspondre à la page 1 */
+            cursor: pointer;
+        }
+
+        #summary-wholesale-france {
+            color: #fff;
+            font-size: 35px;
+            transition: color 0.3s ease;
+            vertical-align: bottom;
+        }
+
+        .container {
+    max-width: 800px;
+    margin: 120px auto 0; /* Ajustez la marge supérieure à 80px pour laisser de la place pour le header */
+    padding: 20px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
 
         .form-group {
             margin-bottom: 20px;
@@ -65,8 +92,15 @@
     <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js/dist/web3.min.js"></script>
 </head>
 <body>
+    <header>
+        <a href="hub.html">
+            <img id="summary-logo" src="image/orange_logo.png" alt="Logo Orange">
+        </a>
+        <span id="summary-wholesale-france">Wholesale</span>
+    </header>
+
     <div class="container">
-        <h1>Interface GoodPlanet</h1>
+        <h1>Espace Chef de Projet Eco-compensation</h1>
 
         <!-- Sélectionnez une transaction par son ID -->
         <div class="form-group">

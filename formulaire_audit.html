@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Création de Badge</title>
+    <!-- Vous pouvez ajouter d'autres scripts ou styles ici si nécessaire -->
+    <style>
+        /* Styles pour le corps de la page */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding-top: 90px; /* Ajoutez une marge équivalente à la hauteur du header */
+        }
+        form {
+            max-width: 400px;
+            margin: auto;
+        }
+        input, select {
+            width: 100%;
+            padding: 8px;
+            margin: 5px 0 15px 0;
+            display: inline-block;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        button {
+            background-color: #000000;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+        }
+        button:hover {
+            background-color: #f58220;
+        }
+
+        /* Styles pour l'en-tête */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background-color: #000000;
+            color: #fff;
+            padding: -10px;
+            display: flex;
+            align-items: center;
+            z-index: 100;
+        }
+
+        #logo {
+            width: 160px;
+            height: auto;
+            margin-right: 0px;
+            vertical-align: middle;
+            cursor: pointer; /* Ajout d'un curseur de main au logo pour indiquer qu'il est cliquable */
+        }
+
+        #wholesale-france {
+            color: #fff;
+            font-size: 35px;
+            transition: color 0.3s ease;
+            vertical-align: bottom;
+        }
+
+        #wholesale-france:hover {
+            color: #f58220;
+        }
+
+        /* Style pour le titre h1 */
+        h1 {
+            text-align: center;
+            color: #f58220; /* Couleur orange habituelle */
+            font-family: Arial, sans-serif;
+        }
+
+        /* Style pour le titre du formulaire */
+        .form-title {
+            color: #f58220; /* Couleur orange habituelle */
+            font-family: Arial, sans-serif;
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+
+        /* Style pour les sous-titres oranges */
+        .section-title {
+            color: #f58220;
+            font-family: Arial, sans-serif;
+            font-size: 18px;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <a href="hub.html">
+        <img id="logo" src="image/orange_logo.png" alt="Logo Orange">
+    </a>
+    <span id="wholesale-france">Wholesale</span>
+</header>
+
+<h1>Espace autorité de confiance d'organisme de certification</h1>
+
+<form id="badgeForm" action="summary.html" method="post">
+    <label for="commercialContact">Certification Manager Contact:</label>
+    <input type="text" name="commercialContact" id="commercialContact" required>
+
+    <label for="companyName">Certification Company Name:</label>
+    <input type="text" name="companyName" id="companyName" required>
+
+    <label for="address">Address:</label>
+    <input type="text" name="address" id="address" required>
+
+    <label for="zipCity">ZipCode / City:</label>
+    <input type="text" name="zipCity" id="zipCity" required>    
+
+    <label for="country">Country:</label>
+    <select name="country" id="country" required>
+        <option value="France">France</option>
+        <option value="Germany">Germany</option>
+        <option value="USA">United States</option>
+        <option value="Italy">Italy</option>
+
+
+        <!-- Ajoutez d'autres pays ici -->
+    </select>
+
+    <label for="email">Email:</label>
+    <input type="email" name="email" id="email" required>
+
+    <label for="cryptoAddress">Crypto Address:</label>
+    <input type="text" name="cryptoAddress" id="cryptoAddress" required>
+
+   
+
+    <button type="button" onclick="validateForm()">Valider</button>
+</form>
+
+<script>
+    function validateForm() {
+        // Récupérer les valeurs du formulaire
+        const commercialContact = document.getElementById("commercialContact").value;
+        const companyName = document.getElementById("companyName").value;
+        const address = document.getElementById("address").value;
+        const zipCity = document.getElementById("zipCity").value;
+        const country = document.getElementById("country").value;
+        const email = document.getElementById("email").value;
+        const cryptoAddress = document.getElementById("cryptoAddress").value;
+
+       
+
+        // Rediriger vers la page de résumé avec les paramètres dans l'URL
+        window.location.href = `summarycertif.html?commercialContact=${encodeURIComponent(commercialContact)}&companyName=${encodeURIComponent(companyName)}&address=${encodeURIComponent(address)}&zipCity=${encodeURIComponent(zipCity)}&country=${encodeURIComponent(country)}&email=${encodeURIComponent(email)}&cryptoAddress=${encodeURIComponent(cryptoAddress)}`;
+    }
+</script>
+
+</body>
+</html>

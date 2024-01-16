@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Résumé</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding-top:110px;
+        }
+        h1 {
+            text-align: center;
+            color: #f58220;
+            font-family: Arial, sans-serif;
+        }
+        .summary-item {
+            margin-bottom: 15px;
+        }
+        .summary-item label {
+            font-weight: bold;
+            margin-right: 5px;
+        }
+        /* Style pour les sous-titres oranges */
+        .section-title {
+            color: #f58220;
+            font-family: Arial, sans-serif;
+            font-size: 18px;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+        /* Styles pour l'en-tête */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background-color: #000000;
+            color: #fff;
+            padding: 10px; /* Ajustement de la marge intérieure */
+            display: flex;
+            align-items: center;
+            z-index: 100;
+        }
+
+        #summary-logo {
+            width: 160px;
+            height: auto;
+            margin-right: 0px; /* Ajustement de la marge à zéro pour correspondre à la page 1 */
+            cursor: pointer;
+        }
+
+        #summary-wholesale-france {
+            color: #fff;
+            font-size: 35px;
+            transition: color 0.3s ease;
+            vertical-align: bottom;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <a href="hub.html">
+        <img id="summary-logo" src="image/orange_logo.png" alt="Logo Orange">
+    </a>
+    <span id="summary-wholesale-france">Wholesale</span>
+</header>
+
+<h1>Résumé des informations</h1>
+
+
+
+<div class="summary-item">
+    <label>Ecocompensation Project Manager Contact:</label>
+    <span id="summaryCommercialContact"></span>
+</div>
+
+<div class="summary-item">
+    <label>Ecocompensation Partner Name:</label>
+    <span id="summaryCompanyName"></span>
+</div>
+
+<div class="summary-item">
+    <label>Address:</label>
+    <span id="summaryAddress"></span>
+</div>
+
+<div class="summary-item">
+    <label>ZipCode / City:</label>
+    <span id="summaryZipCity"></span>
+</div>
+
+<div class="summary-item">
+    <label>Country:</label>
+    <span id="summaryCountry"></span>
+</div>
+
+<div class="summary-item">
+    <label>Email:</label>
+    <span id="summaryEmail"></span>
+</div>
+
+<div class="summary-item">
+    <label>Crypto Address:</label>
+    <span id="summaryCryptoAddress"></span>
+</div>
+
+
+
+<script>
+    // Récupérer les paramètres de l'URL
+    const urlParams = new URLSearchParams(window.location.search);
+
+    // Afficher les valeurs dans le résumé
+    document.getElementById("summaryCommercialContact").textContent = urlParams.get("commercialContact");
+    document.getElementById("summaryCompanyName").textContent = urlParams.get("companyName");
+    document.getElementById("summaryAddress").textContent = urlParams.get("address");
+    document.getElementById("summaryZipCity").textContent = urlParams.get("zipCity");
+    document.getElementById("summaryCountry").textContent = urlParams.get("country");
+    document.getElementById("summaryEmail").textContent = urlParams.get("email");
+    document.getElementById("summaryCryptoAddress").textContent = urlParams.get("cryptoAddress");
+
+   
+</script>
+
+</body>
+</html>

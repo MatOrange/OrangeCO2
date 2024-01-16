@@ -3,119 +3,117 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Écocompensation - Transactions</title>
-    <!-- Incluez les bibliothèques Web3.js, ethers.js et Axios -->
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <title>Interface Certification</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background-color: #0056b3;
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .table th, .table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        .table th {
+            background-color: #f2f2f2;
+        }
+
+        .complete {
+            background-color: #7bed9f;
+        }
+    </style>
+    <!-- Incluez la bibliothèque Web3.js -->
     <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js/dist/web3.min.js"></script>
 </head>
-<style>
-    /* Styles pour le corps de la page */
-    body {
-        font-family: Arial, sans-serif;
-        background-color: #fff;
-        margin: 0;
-        padding: 0;
-        text-align: center; /* Centre le contenu horizontalement */
-    }
-
-    header {
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        background-color: #000000;
-        color: #fff;
-        padding: -10px;
-        display: flex;
-        align-items: center;
-        z-index: 100;
-    }
-
-    #logo {
-        width: 160px;
-        height: auto;
-        margin-right: 0px;
-        vertical-align: middle;
-        cursor: pointer; /* Ajout d'un curseur de main au logo pour indiquer qu'il est cliquable */
-    }
-
-    #wholesale-france {
-        color: #fff;
-        font-size: 35px;
-        transition: color 0.3s ease;
-        vertical-align: bottom;
-    }
-
-    #wholesale-france:hover {
-        color: #f58220;
-    }
-
-    /* Style pour la liste des transactions */
-    #transaction-list {
-        list-style-type: none;
-        padding: 0;
-    }
-
-    .transaction-item {
-        font-size: 18px;
-        margin: 10px 0;
-        padding: 10px;
-        border: 1px solid #ccc;
-        background-color: #f5f5f5;
-        border-radius: 5px;
-        cursor: pointer; /* Ajout d'un curseur de main pour indiquer que les lignes sont cliquables */
-    }
-
-    .transaction-details {
-        display: none; /* Les détails de la transaction ne sont pas affichés par défaut */
-        padding: 10px;
-        border: 1px solid #ccc;
-        background-color: #f9f9f9;
-    }
-
-    .certificate-button {
-        margin-top: 10px;
-        padding: 5px 10px;
-        background-color: #007bff;
-        color: #fff;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        margin-left: 50px;
-    }
-</style>
 <body>
-<header>
-    <!-- Ajout d'un lien autour de l'image du logo -->
-    <a href="hub.html">
-        <img id="logo" src="image/orange_logo.png" alt="Logo Orange">
-    </a>
-    <span id="wholesale-france">Wholesale</span>
-</header>
+    <div class="container">
+        <h1>Interface de Certification d'Ecocompensation</h1>
 
-<h1>Écocompensation - Transactions</h1>
+        <!-- Sélectionnez une transaction par son ID -->
+        <div class="form-group">
+            <label for="transactionSelect">Sélectionnez une commande :</label>
+            <select id="transactionSelect" class="form-control">
+                <!-- Les options seront générées dynamiquement avec JavaScript -->
+            </select>
+        </div>
 
-<!-- Div pour afficher les transactions -->
-<div id="transactions">
-    <h2>Vos Transactions</h2>
-    <ul id="transaction-list">
-        <!-- Les transactions seront ajoutées ici -->
-    </ul>
-</div>
+        <!-- Bouton pour soumettre la mise à jour -->
+        <button id="submitUpdate" class="btn btn-primary">Certifier</button>
 
-<script>
-    // Vérifiez si Metamask est installé
-    if (window.ethereum) {
-        // Demandez à l'utilisateur de se connecter
-        window.ethereum.enable().then(function () {
-            // Initialisez Web3.js
-            const web3 = new Web3(window.ethereum);
+        <!-- Tableau pour afficher les détails de la transaction -->
+        <h2>Liste des commandes</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ID Commande</th>
+                    <th>Date</th>
+                    <th>Taux CO2 commandé</th>
+                    <th>État de la commande</th>
+                </tr>
+            </thead>
+            <tbody id="transactionTable">
+                <!-- Les détails de la transaction seront générés dynamiquement avec JavaScript -->
+            </tbody>
+        </table>
+    </div>
 
-            // Remplacez ceci par l'adresse de votre contrat intelligent
-            const contractAddress = '0xa5477348Deaf8183D3292403E408bB67969AF3A4';
+    <script>
+        // Vérifiez si Metamask est installé
+        if (window.ethereum) {
+            // Demandez à l'utilisateur de se connecter
+            window.ethereum.enable().then(async function () {
+                // Initialisez Web3.js
+                const web3 = new Web3(window.ethereum);
 
-            // Initialisez l'ABI (Remplacez ceci par l'ABI réelle de votre contrat)
-            const ABI_DU_CONTRAT = [
+                // Remplacez ceci par l'adresse de votre contrat intelligent
+                const contractAddress = '0xa5477348Deaf8183D3292403E408bB67969AF3A4';
+
+                // Initialisez l'ABI (Remplacez ceci par l'ABI réelle de votre contrat)
+                const ABI_DU_CONTRAT = [
     {
       "inputs": [],
       "stateMutability": "nonpayable",
@@ -520,107 +518,92 @@
     }
   ];
 
-            // Initialisez le contrat intelligent en utilisant l'ABI
-            const contract = new web3.eth.Contract(ABI_DU_CONTRAT, contractAddress);
+                // Initialisez le contrat intelligent en utilisant l'ABI
+                const contract = new web3.eth.Contract(ABI_DU_CONTRAT, contractAddress);
 
-            // Fonction pour afficher les transactions de l'adresse connectée
-            async function displayTransactions() {
-                const accounts = await web3.eth.getAccounts();
-                const userAddress = accounts[0]; // Adresse crypto connectée
+                // Fonction pour peupler la liste déroulante avec les ID de transaction
+                async function populateTransactionSelect() {
+                    const transactionsCount = await contract.methods.getTransactionsCount().call();
+                    const transactionSelect = document.getElementById('transactionSelect');
 
-                // Obtenez le nombre total de transactions
-                const transactionCount = await contract.methods.getTransactionsCount().call();
-
-                // Obtenez toutes les transactions de l'adresse connectée
-                const userTransactions = [];
-                for (let i = 0; i < transactionCount; i++) {
-                    const transaction = await contract.methods.getTransaction(i).call();
-                    if (transaction.sender.toLowerCase() === userAddress.toLowerCase()) {
-                        userTransactions.push(transaction);
+                    for (let i = 0; i < transactionsCount; i++) {
+                        const transaction = await contract.methods.getTransaction(i).call();
+                        const option = document.createElement('option');
+                        option.value = transaction.orderId;
+                        option.textContent = `ID de transaction : ${transaction.orderId} - tCO2 : ${transaction.tCO2}`;
+                        transactionSelect.appendChild(option);
                     }
                 }
 
-                // Triez les transactions par ordre décroissant de timestamp
-                userTransactions.sort((a, b) => b.timestamp - a.timestamp);
+                // Écouteur d'événement pour soumettre la mise à jour
+                document.getElementById('submitUpdate').addEventListener('click', async () => {
+                    const selectedTransactionId = document.getElementById('transactionSelect').value;
 
-                // Sélectionnez la liste des transactions
-                const transactionList = document.getElementById('transaction-list');
+                    try {
+                        console.log("Selected Transaction ID:", selectedTransactionId);
 
-                // Effacez toutes les transactions existantes
-                transactionList.innerHTML = '';
+                        // Appelez la fonction addToTco2 avec l'orderId et l'action appropriés
+                        await contract.methods.addToTco2(selectedTransactionId, 0, "Certifié").send({ from: window.ethereum.selectedAddress });
 
-                // Si la liste des transactions est vide, affichez un message approprié
-                if (userTransactions.length === 0) {
-                    const noTransactionMessage = document.createElement('li');
-                    noTransactionMessage.textContent = "Aucune transaction n'est disponible.";
-                    transactionList.appendChild(noTransactionMessage);
-                } else {
-                    // Parcourez les transactions triées et affichez-les
-                    for (const transaction of userTransactions) {
-                        const transactionItem = document.createElement('li');
-                        transactionItem.classList.add('transaction-item');
-                        transactionItem.innerHTML = `OrderID: ${transaction.orderId} | Date: ${new Date(transaction.timestamp * 1000).toLocaleDateString()} | Heure: ${new Date(transaction.timestamp * 1000).toLocaleTimeString()} | Taux de CO2: ${transaction.tCO2} tonnes | Prix en Euros: ${transaction.euros}`;
+                        alert('Certification réussie !');
+                    } catch (error) {
+                        console.error('Erreur lors de la certification :', error);
+                    }
+                });
 
-                        // Ajoutez un élément div pour le menu déroulant
-                        const detailsDiv = document.createElement('div');
-                        detailsDiv.classList.add('transaction-details');
+                // Fonction pour afficher les transactions dans le tableau (uniquement celles avec le statut "Complete")
+                async function displayTransactions() {
+                    const transactionsCount = await contract.methods.getTransactionsCount().call();
+                    const transactionTable = document.getElementById('transactionTable');
 
-                        // Vérifiez le statut de la commande et affichez le message approprié
-                        if (transaction.status === 'Nouveau') {
-                            detailsDiv.textContent = 'Etat de la commande : en cours de traitement par GoodPlanet';
-                        } else if (transaction.status === 'Complete') {
-                            detailsDiv.textContent = 'Etat de la commande : Votre commande a été complétée par GoodPlanet';
+                    // Effacez le contenu précédent du tableau
+                    transactionTable.innerHTML = '';
 
-                            // Ajoutez le bouton "Consulter le certificat" pour les transactions complètes
-                            const certificateButton = document.createElement('button');
-                            certificateButton.classList.add('certificate-button');
-                            certificateButton.textContent = 'Consulter le certificat';
-                            // Remplacez "certificat.html" par le lien réel vers la page du certificat
-                            certificateButton.onclick = function () {
-                                window.location.href = 'certificat.html';
-                            };
-                            detailsDiv.appendChild(certificateButton);
-                        } else {
-                            detailsDiv.textContent = 'Etat de la commande : Statut inconnu';
+                    for (let i = transactionsCount - 1; i >= 0; i--) {
+                        const transaction = await contract.methods.getTransaction(i).call();
+                        if (transaction.status === "Complete") {
+                            const row = document.createElement('tr');
+
+                            const orderIdCell = document.createElement('td');
+                            orderIdCell.textContent = transaction.orderId;
+                            row.appendChild(orderIdCell);
+
+                            // Ajoutez la cellule pour la date (timestamp)
+                            const dateCell = document.createElement('td');
+                            const date = new Date(transaction.timestamp * 1000);
+                            dateCell.textContent = date.toLocaleDateString();
+                            row.appendChild(dateCell);
+
+                            const tCO2Cell = document.createElement('td');
+                            tCO2Cell.textContent = transaction.tCO2;
+                            row.appendChild(tCO2Cell);
+
+                            const statusCell = document.createElement('td');
+                            statusCell.textContent = transaction.status;
+                            row.appendChild(statusCell);
+
+                            // Ajoutez la classe "complete" si le statut est "Complete"
+                            if (transaction.status === "Complete") {
+                                row.classList.add('complete');
+                            }
+
+                            transactionTable.appendChild(row);
                         }
-
-                        // Ajoutez le menu déroulant à la ligne de transaction
-                        transactionItem.appendChild(detailsDiv);
-
-                        transactionList.appendChild(transactionItem);
                     }
                 }
-            }
 
-            // Utilisez un gestionnaire d'événements délégués pour gérer les clics sur toutes les transactions
-            document.getElementById('transaction-list').addEventListener('click', function (event) {
-                const target = event.target;
+                // Appelez la fonction pour peupler la liste déroulante lorsque la page est chargée
+                populateTransactionSelect();
 
-                // Vérifiez si l'élément cliqué est une ligne de transaction
-                if (target.classList.contains('transaction-item')) {
-                    // Sélectionnez le menu déroulant (div.transaction-details) à l'intérieur de la ligne de transaction
-                    const detailsDiv = target.querySelector('.transaction-details');
+                // Appelez la fonction pour afficher les transactions dans le tableau
+                displayTransactions();
 
-                    // Vérifiez si le menu déroulant est actuellement affiché
-                    if (detailsDiv.style.display === 'block' || detailsDiv.style.display === '') {
-                        // Masquez le menu déroulant
-                        detailsDiv.style.display = 'none';
-                    } else {
-                        // Affichez le menu déroulant
-                        detailsDiv.style.display = 'block';
-                    }
-                }
+            }).catch(function (error) {
+                console.error('Erreur lors de l\'autorisation Metamask :', error);
             });
-
-            // Appelez la fonction pour afficher les transactions lorsque la page est chargée
-            displayTransactions();
-
-        }).catch(function (error) {
-            console.error('Erreur lors de l\'autorisation Metamask :', error);
-        });
-    } else {
-        alert('Veuillez installer Metamask pour utiliser cette fonctionnalité.');
-    }
-</script>
+        } else {
+            alert('Veuillez installer Metamask pour utiliser cette fonctionnalité.');
+        }
+    </script>
 </body>
 </html>
